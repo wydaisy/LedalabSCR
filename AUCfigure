@@ -1,0 +1,306 @@
+% This script was adjusted by YW 8/19/19
+clear;
+VRB_epoch = [];
+VRO_epoch = [];
+SB_epoch = [];
+SO_epoch = [];
+WMT_epoch = [];
+
+
+% define datafile for VRB
+Datafile = dir('*_VRB_Edit_Channels.mat');
+for subj = 1:length(Datafile)
+    Analyzed_data = load(Datafile(subj).name);
+    
+    PhasicDriver = Analyzed_data.analysis.driver;
+    
+    % define the start point and end point
+    MyData = Analyzed_data.data;
+    SampleRate = 1/(MyData.time(3)-MyData.time(2));
+    MyMarkers = [];
+    % define start point
+    for i = length(MyData.event)-2 : length(MyData.event)% last three stimulations are pain tolerance
+        MyMarkers(i) = MyData.event(i).time;
+        MyMarkers_final = nonzeros(MyMarkers);
+        Start_Points = fix(MyMarkers_final*SampleRate);
+    end
+    
+    % define start point
+    Start_Points_final = Start_Points - SampleRate;
+    % define end point
+    End_Points = fix(Start_Points + 26*SampleRate);
+   
+   
+   % epoch the SCR
+   epoch = [];
+   my_epoch = [];
+   for w = 1:2
+       b = length(PhasicDriver(Start_Points_final(w):End_Points(w)));
+       epoch(2,1:b) = PhasicDriver(Start_Points_final(w):End_Points(w));
+   end
+      
+      if End_Points(3) < length(PhasicDriver), 
+          epoch(3,:) = PhasicDriver(Start_Points_final(3):End_Points(3));
+      else
+          a = length(PhasicDriver) - Start_Points_final(3) +1 ;
+          epoch(3,1:a) = PhasicDriver(Start_Points_final(3):length(PhasicDriver));
+      end
+      
+      my_epoch = mean(epoch);
+   VRB_epoch(subj,1:length(my_epoch)) = my_epoch;
+end
+
+VRB_condition = mean(VRB_epoch);
+
+% define datafile for VRO
+Datafile = dir('*_VRO_Edit_Channels.mat');
+for subj = 1:length(Datafile)
+    Analyzed_data = load(Datafile(subj).name);
+    
+    PhasicDriver = Analyzed_data.analysis.driver;
+    
+    % define the start point and end point
+    MyData = Analyzed_data.data;
+    SampleRate = 1/(MyData.time(3)-MyData.time(2));
+    MyMarkers = [];
+    % define start point
+    for i = length(MyData.event)-2 : length(MyData.event)% last three stimulations are pain tolerance
+        MyMarkers(i) = MyData.event(i).time;
+        MyMarkers_final = nonzeros(MyMarkers);
+        Start_Points = fix(MyMarkers_final*SampleRate);
+    end
+    
+    %define start point -1 s before onset of the stimulation
+    Start_Points_final = fix(Start_Points - SampleRate);
+    % define end point
+    End_Points = fix(Start_Points + 26*SampleRate);
+  
+   
+    % epoch the SCR
+   epoch = [];
+   my_epoch = [];
+   for w = 1:2
+       b = length(PhasicDriver(Start_Points_final(w):End_Points(w)));
+       epoch(2,1:b) = PhasicDriver(Start_Points_final(w):End_Points(w));
+   end
+      
+      if End_Points(3) < length(PhasicDriver), 
+          epoch(3,:) = PhasicDriver(Start_Points_final(3):End_Points(3));
+      else
+          a = length(PhasicDriver) - Start_Points_final(3) +1 ;
+          epoch(3,1:a) = PhasicDriver(Start_Points_final(3):length(PhasicDriver));
+      end
+      
+      my_epoch = mean(epoch);
+   
+   VRO_epoch(subj,1:length(my_epoch)) = my_epoch;
+end
+
+VRO_condition = mean(VRO_epoch);
+
+% define datafile for SB
+Datafile = dir('*_SB_Edit_Channels.mat');
+for subj = 1:length(Datafile)
+    Analyzed_data = load(Datafile(subj).name);
+    
+    PhasicDriver = Analyzed_data.analysis.driver;
+    
+    % define the start point and end point
+    MyData = Analyzed_data.data;
+    SampleRate = 1/(MyData.time(3)-MyData.time(2));
+    MyMarkers = [];
+    % define start point
+    for i = length(MyData.event)-2 : length(MyData.event)% last three stimulations are pain tolerance
+        MyMarkers(i) = MyData.event(i).time;
+        MyMarkers_final = nonzeros(MyMarkers);
+        Start_Points = fix(MyMarkers_final*SampleRate);
+    end
+    
+   % define the start point
+   Start_Points_final = fix(Start_Points - SampleRate);
+   % define end point
+   End_Points = fix(Start_Points + 26*SampleRate);
+      
+   % epoch the SCR
+   epoch = [];
+   my_epoch = [];
+   for w = 1:2
+       b = length(PhasicDriver(Start_Points_final(w):End_Points(w)));
+       epoch(2,1:b) = PhasicDriver(Start_Points_final(w):End_Points(w));
+   end
+      
+      if End_Points(3) < length(PhasicDriver), 
+          epoch(3,:) = PhasicDriver(Start_Points_final(3):End_Points(3));
+      else
+          a = length(PhasicDriver) - Start_Points_final(3) +1 ;
+          epoch(3,1:a) = PhasicDriver(Start_Points_final(3):length(PhasicDriver));
+      end
+      
+      my_epoch = mean(epoch);
+   
+   SB_epoch(subj,1:length(my_epoch)) = my_epoch;
+end
+
+SB_condition = mean(SB_epoch);
+
+
+% define datafile for SO
+Datafile = dir('*_SO_Edit_Channels.mat');
+for subj = 1:length(Datafile)
+    Analyzed_data = load(Datafile(subj).name);
+    
+    PhasicDriver = Analyzed_data.analysis.driver;
+    
+    % define the start point and end point
+    MyData = Analyzed_data.data;
+    SampleRate = 1/(MyData.time(3)-MyData.time(2));
+    MyMarkers = [];
+    % define start point
+    for i = length(MyData.event)-2 : length(MyData.event)% last three stimulations are pain tolerance
+        MyMarkers(i) = MyData.event(i).time;
+        MyMarkers_final = nonzeros(MyMarkers);
+        Start_Points = fix(MyMarkers_final*SampleRate);
+    end
+    
+   % define the start point
+   Start_Points_final = fix(Start_Points - SampleRate);
+   % define end point
+   End_Points = fix(Start_Points + 26*SampleRate);
+   
+   % epoch the SCR
+   epoch = [];
+   my_epoch = [];
+   for w = 1:2
+       b = length(PhasicDriver(Start_Points_final(w):End_Points(w)));
+       epoch(2,1:b) = PhasicDriver(Start_Points_final(w):End_Points(w));
+   end
+      
+      if End_Points(3) < length(PhasicDriver), 
+          epoch(3,:) = PhasicDriver(Start_Points_final(3):End_Points(3));
+      else
+          a = length(PhasicDriver) - Start_Points_final(3) +1 ;
+          epoch(3,1:a) = PhasicDriver(Start_Points_final(3):length(PhasicDriver));
+      end
+      
+      my_epoch = mean(epoch);
+   
+   SO_epoch(subj,1:length(my_epoch)) = my_epoch;
+end
+
+SO_condition = mean(SO_epoch);
+
+
+% define datafile for WMT
+Datafile = dir('*_WMT_Edit_Channels.mat');
+for subj = 1:length(Datafile)
+    Analyzed_data = load(Datafile(subj).name);
+    
+    PhasicDriver = Analyzed_data.analysis.driver;
+    
+    % define the start point and end point
+    MyData = Analyzed_data.data;
+    SampleRate = 1/(MyData.time(3)-MyData.time(2));
+    MyMarkers = [];
+    % define start point
+    for i = length(MyData.event)-2 : length(MyData.event)% last three stimulations are pain tolerance
+        MyMarkers(i) = MyData.event(i).time;
+        MyMarkers_final = nonzeros(MyMarkers);
+        Start_Points = fix(MyMarkers_final*SampleRate);
+    end
+   
+   % define start point
+   Start_Points_final = fix(Start_Points - SampleRate);
+   % define end point
+   End_Points = fix(Start_Points + 26*SampleRate);
+   
+   % epoch the SCR
+   epoch = [];
+   my_epoch = [];
+   for w = 1:2
+       b = length(PhasicDriver(Start_Points_final(w):End_Points(w)));
+       epoch(2,1:b) = PhasicDriver(Start_Points_final(w):End_Points(w));
+   end
+      
+      if End_Points(3) < length(PhasicDriver), 
+          epoch(3,:) = PhasicDriver(Start_Points_final(3):End_Points(3));
+      else
+          a = length(PhasicDriver) - Start_Points_final(3) +1 ;
+          epoch(3,1:a) = PhasicDriver(Start_Points_final(3):length(PhasicDriver));
+      end
+      
+      my_epoch = mean(epoch);
+      
+      WMT_epoch(subj,1:length(my_epoch)) = my_epoch;
+end
+
+WMT_condition = mean(WMT_epoch);
+
+
+
+% plot the figures
+plot(VRB_condition,'LineWidth', 2);
+hold
+plot(VRO_condition,'LineWidth', 2);
+plot(SB_condition, 'lineWidth', 2);
+plot(SO_condition, 'lineWidth', 2);
+plot(WMT_condition, 'lineWidth', 2);
+
+% save the file
+save('VRB_epoch.mat', 'VRB_epoch');
+save('VRO_epoch.mat', 'VRO_epoch');
+save('SB_epoch.mat', 'SB_epoch');
+save('SO_epoch.mat', 'SO_epoch');
+save('WMT_epoch.mat', 'WMT_epoch');
+
+% calculate 95% CI
+VRB_mean = mean(VRB_epoch);
+VRB_SD = std(VRB_epoch);
+VRB_lower = VRB_mean - 1.96*(VRB_SD/sqrt(40));
+VRB_upper = VRB_mean + 1.96*(VRB_SD/sqrt(40));
+
+VRO_mean = mean(VRO_epoch);
+VRO_SD = std(VRO_epoch);
+VRO_lower = VRO_mean - 1.96*(VRO_SD/sqrt(40));
+VRO_upper = VRO_mean + 1.96*(VRO_SD/sqrt(40));
+
+SB_mean = mean(SB_epoch);
+SB_SD = std(SB_epoch);
+SB_lower = SB_mean - 1.96*(SB_SD/sqrt(40));
+SB_upper = SB_mean + 1.96*(SB_SD/sqrt(40));
+
+SO_mean = mean(SO_epoch);
+SO_SD = std(SO_epoch);
+SO_lower = SO_mean - 1.96*(SO_SD/sqrt(40));
+SO_upper = SO_mean + 1.96*(SO_SD/sqrt(40));
+
+WMT_mean = mean(WMT_epoch);
+WMT_SD = std(WMT_epoch);
+WMT_lower = WMT_mean - 1.96*(WMT_SD/sqrt(40));
+WMT_upper = WMT_mean + 1.96*(WMT_SD/sqrt(40));
+
+X_axis = linspace(-1,26,6751);
+plot(X_axis, VRB_mean, 'Color', [224/255 58/255 62/255], 'LineWidth', 4);
+ax = gca
+ax.XAxis.LineWidth = 3;
+ax.YAxis.LineWidth = 3;
+hold
+% plot(VRB_lower,'--r', 'LineWidth', 2);
+% plot(VRB_upper, '--r', 'LineWidth', 2);
+
+plot(X_axis, VRO_mean, 'Color', [255/255 213/255 32/255],'LineWidth', 4);
+% plot(VRO_lower,'--y','LineWidth', 2);
+% plot(VRO_upper,'--y','LineWidth', 2);
+
+plot(X_axis, SB_mean, 'Color', [0.7 0.7 0.7], 'LineWidth', 4);
+% plot(SB_lower,'--g','LineWidth', 2);
+% plot(SB_upper,'--g','LineWidth', 2);
+
+plot(X_axis, SO_mean, 'Color', [0.5 0.5 0.5], 'LineWidth', 4);
+% plot(SO_lower,'--b','LineWidth', 2);
+% plot(SO_upper,'--b','LineWidth', 2);
+
+plot(X_axis, WMT_mean, 'k','LineWidth', 4);
+% plot(WMT_lower,'--k','LineWidth', 2);
+% plot(WMT_upper,'--k','LineWidth', 2);
+
+legend('VR Ocean', 'VR Opera', 'Sham Ocean', 'Sham Opera', '2-Back Task')
