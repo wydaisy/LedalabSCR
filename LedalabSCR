@@ -1,0 +1,5 @@
+% This script was adpated by YW 08052021
+% To analysis the SCR data, matlab format file should be exported from the
+% AnalyzerII. The script will save the data into matlab file
+
+Ledalab('/Users/yangwang/Desktop/TMD_VR_SCR/all/temp/', 'open', 'visionanalyzer', 'downsample', 2, 'filter', [1,2], 'smooth', {'mean',1000},  'analyze', 'CDA', 'optimize', 2, 'export_era', [1 23.35 0.1 1])
