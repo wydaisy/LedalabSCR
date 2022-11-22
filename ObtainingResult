@@ -1,0 +1,72 @@
+% This script exacted SCR data from individual result and save them into one excel
+% file
+clear
+rawpath = 'C:\Users\yang.wang\OneDrive - University of Maryland Baltimore\VR\VR_raw\VRSCR20-47\1to1s delay';
+% extract VRB condition
+Datafile = dir('*_VRB_Edit_Channels_era.xls');
+VRBValues = zeros(24,10);
+for subj = 1:length(Datafile)
+    [SCR,TXT,RAW] = xlsread(Datafile(subj).name,'CDA');
+    VRBMPTSCR = [SCR(end-2:end,7)]';
+    VRBMPTISCR = [SCR(end-2:end,8)]';
+    VRBMPTGlobal_mean = [SCR(end-2:end,end-1)]';
+    VRBValues(subj,:) = [subj,VRBMPTSCR(1),VRBMPTSCR(2),VRBMPTSCR(3),VRBMPTISCR(1),VRBMPTISCR(2),VRBMPTISCR(3),VRBMPTGlobal_mean(1),VRBMPTGlobal_mean(2),VRBMPTGlobal_mean(3)];
+end
+
+% extract VRO condition
+Datafile = dir('*_VRO_Edit_Channels_era.xls');
+VROValues = zeros(24,10);
+for subj = 1:length(Datafile)
+    [SCR,TXT,RAW] = xlsread(Datafile(subj).name,'CDA');
+    VROMPTSCR = [SCR(end-2:end,7)]';
+    VROMPTISCR = [SCR(end-2:end,8)]';
+    VROMPTGlobal_mean = [SCR(end-2:end,end-1)]';
+    VROValues(subj,:) = [subj,VROMPTSCR(1),VROMPTSCR(2),VROMPTSCR(3),VROMPTISCR(1),VROMPTISCR(2),VROMPTISCR(3),VROMPTGlobal_mean(1),VROMPTGlobal_mean(2),VROMPTGlobal_mean(3)];
+end
+
+% extract SB conditoin
+Datafile = dir('*_SB_Edit_Channels_era.xls');
+SBValues = zeros(24,10);
+for subj = 1:length(Datafile)
+    [SCR,TXT,RAW] = xlsread(Datafile(subj).name,'CDA');
+    SBMPTSCR = [SCR(end-2:end,7)]';
+    SBMPTISCR = [SCR(end-2:end,8)]';
+    SBMPTGlobal_mean = [SCR(end-2:end,end-1)]';
+    SBValues(subj,:) = [subj,SBMPTSCR(1),SBMPTSCR(2),SBMPTSCR(3),SBMPTISCR(1),SBMPTISCR(2),SBMPTISCR(3),SBMPTGlobal_mean(1),SBMPTGlobal_mean(2),SBMPTGlobal_mean(3)];
+end
+
+% extract SO condition
+Datafile = dir('*_SO_Edit_Channels_era.xls');
+SOValues = zeros(24,10);
+for subj = 1:length(Datafile)
+    [SCR,TXT,RAW] = xlsread(Datafile(subj).name,'CDA');
+    SOMPTSCR = [SCR(end-2:end,7)]';
+    SOMPTISCR = [SCR(end-2:end,8)]';
+    SOMPTGlobal_mean = [SCR(end-2:end,end-1)]';
+    SOValues(subj,:) = [subj,SOMPTSCR(1),SOMPTSCR(2),SOMPTSCR(3),SOMPTISCR(1),SOMPTISCR(2),SOMPTISCR(3),SOMPTGlobal_mean(1),SOMPTGlobal_mean(2),SOMPTGlobal_mean(3)];
+end
+
+% extract WMT condition
+Datafile = dir('*_WMT_Edit_Channels_era.xls');
+WMTValues = zeros(24,10);
+for subj = 1:length(Datafile);
+    [SCR,TXT,RAW] = xlsread(Datafile(subj).name,'CDA');
+    WMTMPTSCR = [SCR(end-2:end,7)]';
+    WMTMPTISCR = [SCR(end-2:end,8)]';
+    WMTMPTGlobal_mean = [SCR(end-2:end,end-1)]';
+    WMTValues(subj,:) = [subj,WMTMPTSCR(1),WMTMPTSCR(2),WMTMPTSCR(3),WMTMPTISCR(1),WMTMPTISCR(2),WMTMPTISCR(3),WMTMPTGlobal_mean(1),WMTMPTGlobal_mean(2),WMTMPTGlobal_mean(3)];
+end
+
+Values = zeros(24,46);
+Values(:,1:10)= VRBValues;
+Values(:,11:19)= VROValues(:,2:10);
+Values(:,20:28)= SBValues(:,2:10);
+Values(:,29:37)= SOValues(:,2:10);
+Values(:,38:46) = WMTValues(:,2:10);
+
+headers = {'subj','VRBMPTSCR1','VRBMPTSCR2','VRBMPTSCR3','VRBMPTISCR1','VRBMPTISCR2','VRBMPTISCR3','VRBMPTGlobal_mean1','VRBMPTGlobal_mean2','VRBMPTGlobal_mean3',...
+  'VROMPTSCR1','VROMPTSCR2','VROMPTSCR3','VROMPTISCR1','VROMPTISCR2','VROMPTISCR3','VROMPTGlobal_mean1','VROMPTGlobal_mean2','VROMPTGlobal_mean3',...
+  'SBMPTSCR1','SBMPTSCR2','SBMPTSCR3','SBMPTISCR1','SBMPTISCR2','SBMPTISCR3','SBMPTGlobal_mean1','SBMPTGlobal_mean2','SBMPTGlobal_mean3',...
+  'SOMPTSCR1','SOMPTSCR2','SOMPTSCR3','SOMPTISCR1','SOMPTISCR2','SOMPTISCR3','SOMPTGlobal_mean1','SOMPTGlobal_mean2','SOMPTGlobal_mean3',...
+ 'WMTMPTSCR1','WMTMPTSCR2','WMTMPTSCR3','WMTMPTISCR1','WMTMPTISCR2','WMTMPTISCR3','WMTMPTGlobal_mean1','WMTMPTGlobal_mean2','WMTMPTGlobal_mean3' };
+    xlswrite('baseline.xls', [headers; num2cell(Values)])
